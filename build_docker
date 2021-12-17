@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+DOCKER_cmd=`which docker`
+DOCKER_IMAGE_NAME="iac-tools"
+DOCKER_IMAGE_TAG="latest"
+
+while getopts ":t:n:h" opt; do
+    case ${opt} in
+        h )
+            echo "Usage: $0 [-h|-t|-n]"
+            echo "   -h  Display help message"
+            echo "   -n  Docker image name"
+            echo "   -t  Docker image tag"
+            exit 0
+            ;;
+        n )
+            DOCKER_IMAGE_NAME=$OPTARG
+            ;;
+        t )
+            DOCKER_IMAGE_TAG=$OPTARG
+            ;;
+        \? )
+            echo "Invalid option: $OPTARG" 1>&2
+            exit 1
+            ;;
+        : )
+            echo "Invalid option: $OPTARG requires an argument" 1>&2
+            exit -1
+            ;;
+    esac
+done
+shift $((OPTIND -1))
+${DOCKER_cmd} build . -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
+
+# vim: filetype=bash
