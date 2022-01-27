@@ -1,5 +1,5 @@
-FROM alpine/terragrunt:1.1.3
-# terraform: 1.1.3 terragrunt: 0.35.16
+FROM alpine/terragrunt:1.1.4
+# terraform: 1.1.4 terragrunt: 0.36.0
 
 RUN apk update && \
         apk add --no-cache vault nodejs npm yarn python3 py3-pip jq curl docker-credential-ecr-login && \
