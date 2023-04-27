@@ -1,12 +1,12 @@
-FROM alpine/terragrunt:1.1.4
-# terraform: 1.1.4 terragrunt: 0.36.0
+FROM docker.io/alpine/terragrunt:1.4.6
+# terraform: 1.4.6 terragrunt: 0.45.4
 
 RUN apk update && \
-        apk add --no-cache vault nodejs npm yarn python3 py3-pip jq curl docker-credential-ecr-login && \
-        npm config set registry https://art-bobcat.autodesk.com/artifactory/api/npm/autodesk-npm-virtual/ && \
-        yarn config set registry https://art-bobcat.autodesk.com/artifactory/api/npm/autodesk-npm-virtual/ && \
-        npm install -g serverless fx && \
+        apk add --no-cache vault nodejs npm yarn python3 py3-pip jq curl docker-credential-ecr-login gcc musl-dev python3-dev libffi-dev openssl-dev cargo make && \
+        pip install --upgrade pip && \
+        pip install azure-cli && \
         pip install awscli && \
+        npm install -g serverless fx && \
         rm -rf /root/.cache /root/.npm /var/cache/apk
 
 ENV LANG en_US.UTF-8
@@ -16,8 +16,8 @@ ENV LC_ALL en_US.UTF-8
 # Set image for Jenkins environment
 ARG user=iacuser
 ARG group=iacuser
-ARG uid=1001
-ARG gid=1001
+ARG uid=1000
+ARG gid=1000
 
 ENV IACUSER_HOME /home/iacuser
 RUN addgroup -g ${gid} ${group} && adduser -D -u ${uid} -G ${group} -h ${IACUSER_HOME} -s /bin/bash ${user}
